@@ -20,6 +20,9 @@ bindkey '^[[1;5D' backward-word
 # shift + tab for reverse tab-completion
 bindkey '^[[Z' reverse-menu-complete
 
+# Show selection on tab completion
+zstyle ':completion:*' menu select
+
 # Custom chars which define beginning or end of words
 WORDCHARS=${WORDCHARS/\/}
 

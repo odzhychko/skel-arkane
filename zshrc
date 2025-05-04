@@ -1,10 +1,16 @@
 autoload -Uz compinit && compinit
 
-# Prompt style, when the hostname is set to toolbox it will load a custom promp style,
-# this is useful to quickly visually identify containerized shell instances
-if [[ ! $HOSTNAME == 'toolbox' ]]; then
+if [[ -n ${CONTAINER_ID:-} ]]; then
+	# `CONTAINER_ID`is available in containers created by Distrobox.
+	# See https://github.com/89luca89/distrobox/blob/7c0c1e5fcd3c065d43a52412d39654bca82afc28/distrobox-init#L2100
+	# Style prompt to indicate shell instance running inside a container.
+	# Also, show the container ID instead of the hostname.
+	PS1="📦 %(?..[%F{136}%?%f] )%n%f@%F{35}$CONTAINER_ID%f %1~ %#> "
+elif [[ ! $HOSTNAME == 'toolbox' ]]; then
 	PS1='%(?..[%F{136}%?%f] )%n%f@%F{136}%m%f %1~ %#> '
 else
+	# Prompt style, when the hostname is set to toolbox it will load a custom promp style,
+	# this is useful to quickly visually identify containerized shell instances
 	PS1='⬢ %(?..[%F{136}%?%f] )%n%f@%F{35}%m%f %1~ %#> '
 fi
 
@@ -34,3 +40,4 @@ WORDCHARS=${WORDCHARS/\/}
 
 # Use colors for ls
 alias ls='ls --color=auto'
+
